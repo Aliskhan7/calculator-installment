@@ -1,9 +1,11 @@
+import {Formik} from "formik";
+import Calculator from "./components/shared/Calculator";
 
 function App() {
   return (
-    <div className="App">
-
-    </div>
+      <div className="sm:container mx-auto">
+        <Calculator/>
+      </div>
   );
 }
 
