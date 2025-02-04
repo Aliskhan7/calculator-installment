@@ -1,4 +1,3 @@
-import {Formik} from "formik";
 import Calculator from "./components/shared/Calculator";
 
 function App() {
