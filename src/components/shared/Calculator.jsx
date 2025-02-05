@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 const Calculator = () => {
     const [loanAmountStr, setLoanAmountStr] = useState("10000");
@@ -11,9 +11,10 @@ const Calculator = () => {
 
 
     // При расчёте переводим строки в числа. Пустая строка => 0
-    const calculateMonthlyPayment = () => {
+    const calculateMonthlyPayment = useCallback(() => {
         const loanAmount = parseFloat(loanAmountStr) || 0;
-        const loanTerm = parseInt(loanTermStr, 10) || 0;// фиксированный процент по сроку
+        const loanTerm = parseInt(loanTermStr, 10) || 0;
+
         let tableRate = 0;
         switch (loanTerm) {
             case 3:
@@ -33,27 +34,26 @@ const Calculator = () => {
         }
 
         const fullAmount = loanAmount + loanAmount * (tableRate / 100);
-        // Если срок 0 или его нет, чтобы избежать деления на 0, проверяем это
         const paymentPerMonth = loanTerm > 0 ? (fullAmount / loanTerm) : 0;
 
         setTotalWithInterest(fullAmount.toFixed(2));
         setMonthlyPayment(paymentPerMonth.toFixed(2));
-    };
+    }, [loanAmountStr, loanTermStr]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         calculateMonthlyPayment();
         setBgColor((prev) =>
-            prev === "bg-gray-200/50" ? "bg-green-500/50" : "bg-gray-200/50"
+            prev === "bg-transparent" ? "bg-green-500/50" : "bg-transparent"
         );
     };
 
     useEffect(()=> {
         calculateMonthlyPayment();
         setBgColor((prev) =>
-            prev === "bg-gray-200/50" ? "bg-green-500/50" : "bg-gray-200/50"
+            prev === "bg-transparent" ? "bg-green-500/50" : "bg-transparent"
         );
-    }, [loanAmountStr, loanTermStr]);
+    }, [calculateMonthlyPayment, loanAmountStr, loanTermStr]);
 
 
     // Функция для контроля ввода срока рассрочки
