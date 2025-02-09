@@ -22,28 +22,35 @@ const Calculator = () => {
     // Функция расчета
     const calculateMonthlyPayment = useCallback(() => {
         const loanAmount = Math.max(parseFloat(loanAmountStr) || 0, 0);
-        const loanTerm = Math.max(parseInt(loanTermStr, 10) || 0, 3);
+        let loanTerm = Math.max(parseInt(loanTermStr, 10) || 0, 0);
         const downPayment = Math.max(parseFloat(downPaymentStr) || 0, 0);
 
-        const tableRate = getTableRate(loanTerm)
+        let fullAmount = loanAmount;
 
+        // ✅ Если loanTerm = 0, процент НЕ начисляется
+        if (loanAmount > 0 && loanTerm > 0) {
+            const tableRate = getTableRate(loanTerm);
+            fullAmount += loanAmount * (tableRate / 100);
+        }
 
-        // Итоговая сумма с процентами
-        let fullAmount = loanAmount + loanAmount * (tableRate / 100);
+        // ✅ Если loanAmount = 0, итоговая сумма должна оставаться 0
+        if (loanAmount === 0 || loanTerm === 0) {
+            fullAmount = 0;
+        }
 
-        // Вычитаем первый взнос (но не больше, чем сумма рассрочки)
-        if (downPayment > fullAmount) {
+        // ✅ Если первый взнос больше всей суммы — итоговая сумма становится 0
+        if (downPayment >= fullAmount) {
             fullAmount = 0;
         } else {
             fullAmount -= downPayment;
         }
 
-        // Рассчитываем ежемесячный платеж
-        const paymentPerMonth = loanTerm > 0 ? (fullAmount / loanTerm) : 0;
+        const paymentPerMonth = loanTerm > 0 ? fullAmount / loanTerm : 0;
 
         setTotalWithInterest(fullAmount.toFixed(2));
         setMonthlyPayment(paymentPerMonth.toFixed(2));
     }, [loanAmountStr, loanTermStr, downPaymentStr]);
+
 
     useEffect(() => {
         calculateMonthlyPayment();
@@ -57,10 +64,22 @@ const Calculator = () => {
     };
 
     const handleLoanTermChange = (e) => {
-        let value = parseInt(e.target.value, 10);
-        if (value < 3) value = 3;
-        if (value > 6) value = 6;
-        setLoanTermStr(value.toString());
+        let value = e.target.value;
+
+        // Если поле пустое, ставим 0
+        if (value.trim() === "") {
+            setLoanTermStr("0");
+            return;
+        }
+
+        // Преобразуем строку в число
+        let numValue = parseInt(value, 10);
+
+        // Корректируем диапазон
+        if (isNaN(numValue) || numValue < 3) numValue = 3;
+        if (numValue > 6) numValue = 6;
+
+        setLoanTermStr(numValue.toString());
     };
 
     const handleDownPaymentChange = (e) => {
@@ -91,7 +110,6 @@ const Calculator = () => {
                         onChange={handleLoanTermChange}
                     />
                     <div className="absolute z-10 top-[41px] left-6 text-gray-500/50 pointer-events-none">= {getTableRate(loanTermStr)}%</div>
-
                 </div>
 
                 <div className="flex flex-col gap-2">
