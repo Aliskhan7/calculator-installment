@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import {NumericFormat} from "react-number-format";
 
 const Calculator = () => {
     const [loanAmountStr, setLoanAmountStr] = useState("10000");
@@ -87,17 +88,32 @@ const Calculator = () => {
         setDownPaymentStr(value.toString());
     };
 
+    const formatNumber = (num) => {
+        return Math.trunc(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    };
+
+
     return (
         <div className='p-5 lg:p-0 w-full lg:w-1/2 mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
             <h2 className='text-3xl text-center pt-5 font-bold'>Калькулятор рассрочки</h2>
             <form className="flex flex-col gap-4 mt-12">
                 <div className="flex flex-col gap-2">
                     <label>Сумма рассрочки:</label>
-                    <input
-                        className="border border-gray-200 px-2 py-2 rounded-md"
-                        type="number"
+                    {/*<input*/}
+                    {/*    className="border border-gray-200 px-2 py-2 rounded-md"*/}
+                    {/*    type="number"*/}
+                    {/*    value={loanAmountStr}*/}
+                    {/*    onChange={handleLoanAmountChange}*/}
+                    {/*/>*/}
+
+                    <NumericFormat
                         value={loanAmountStr}
-                        onChange={handleLoanAmountChange}
+                        thousandSeparator=" "
+                        allowLeadingZeros={false}
+                        decimalScale={0} // Без дробной части
+                        onValueChange={(values) => handleLoanAmountChange({ target: { value: values.value } })} // Передаёт чистое число без пробелов
+                        className="border border-gray-200 px-2 py-2 rounded-md"
+                        placeholder="Введите сумму"
                     />
                 </div>
 
@@ -126,13 +142,13 @@ const Calculator = () => {
             {/* Блок с обновляемыми значениями и изменяющимся фоном */}
             <div className='flex flex-col gap-2 bg-gray-200/50 p-4 rounded-lg mt-5'>
                 <h3>Сумма рассрочки (без процентов): <span
-                    className={`${bgColor} transition delay-75`}>{loanAmountStr}</span> руб.</h3>
+                    className={`${bgColor} transition delay-75`}>{formatNumber(loanAmountStr)}</span> руб.</h3>
                 <h3>Первый взнос: <span
-                    className={`${bgColor} transition delay-75`}>{downPaymentStr}</span> руб.</h3>
+                    className={`${bgColor} transition delay-75`}>{formatNumber(downPaymentStr)}</span> руб.</h3>
                 <h3>Полная сумма (с процентами): <span
-                    className={`${bgColor} transition delay-75`}>{totalWithInterest}</span> руб.</h3>
+                    className={`${bgColor} transition delay-75`}>{formatNumber(totalWithInterest)}</span> руб.</h3>
                 <h3>Ежемесячный платеж: <span
-                    className={`${bgColor} transition delay-75`}>{monthlyPayment}</span> руб.</h3>
+                    className={`${bgColor} transition delay-75`}>{formatNumber(monthlyPayment)}</span> руб.</h3>
             </div>
         </div>
     );
