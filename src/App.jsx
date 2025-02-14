@@ -12,7 +12,7 @@ function App() {
             <div className="lg:container mx-auto">
                 <Calculator/>
             </div>
-            <footer className='absolute bottom-5 right-10'>
+            <footer className='absolute bottom-2 right-2 md:bottom-5 md:right-10'>
                 <div className='flex items-end gap-x-2'>
                     <img className='w-fit h-[80px]  object-contain mx-auto' src={logoAG} alt="logo"/>
                 </div>
