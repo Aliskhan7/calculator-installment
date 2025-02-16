@@ -10,7 +10,7 @@ export const generateWordFromTemplate = async (fullName,
                                                phone,
                                                passportNumber,
                                                passportSeries,
-                                               address, loanAmount, downPayment, totalWithInterest, monthlyPayment, ) => {
+                                               address, loanTermStr, loanAmount, downPayment, totalWithInterest, monthlyPayment, ) => {
     try {
         // 1️⃣ Загружаем шаблон Word (из папки public/static)
         const response = await fetch(templateDocx);
@@ -28,10 +28,11 @@ export const generateWordFromTemplate = async (fullName,
             passportNumber,
             passportSeries,
             address,
-            loanAmount: formatNumber(loanAmount.toLocaleString("ru-RU")),
-            downPayment: formatNumber(downPayment.toLocaleString("ru-RU")),
-            totalWithInterest: formatNumber(totalWithInterest.toLocaleString("ru-RU")),
-            monthlyPayment: formatNumber(monthlyPayment.toLocaleString("ru-RU")),
+            loanTermStr: formatNumber(loanTermStr),
+            loanAmount: formatNumber(loanAmount),
+            downPayment: formatNumber(downPayment),
+            totalWithInterest: formatNumber(totalWithInterest),
+            monthlyPayment: formatNumber(monthlyPayment),
         });
 
         // 4️⃣ Генерируем документ с новыми данными
