@@ -147,7 +147,7 @@ const Calculator = () => {
                 {/*    Скачать DOCX*/}
                 {/*</button>*/}
                 <button onClick={() => setModalOpen(true)}>Скачать DOCX</button>
-                <ModalForm isOpen={modalOpen} loanAmountStr={loanAmountStr} downPaymentStr={downPaymentStr} totalWithInterest={totalWithInterest} monthlyPayment={monthlyPayment}  onClose={() => setModalOpen(false)}/>
+                <ModalForm isOpen={modalOpen} loanTermStr={loanTermStr} loanAmountStr={loanAmountStr} downPaymentStr={downPaymentStr} totalWithInterest={totalWithInterest} monthlyPayment={monthlyPayment}  onClose={() => setModalOpen(false)}/>
             </div>
         </div>
     );

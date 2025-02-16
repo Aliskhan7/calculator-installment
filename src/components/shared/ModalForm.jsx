@@ -5,7 +5,7 @@ import {generateWordFromTemplate} from "../../utils/generateDocx";
 
 ReactModal.setAppElement("#root"); // Убедись, что у тебя есть root-элемент в index.html
 
-const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithInterest, monthlyPayment }) => {
+const ModalForm = ({ isOpen, onClose,  loanAmountStr, downPaymentStr, totalWithInterest, monthlyPayment, loanTermStr }) => {
     const [formData, setFormData] = useState({
         fullName: "",
         age: "",
@@ -27,11 +27,21 @@ const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithIn
             formData.passportNumber,
             formData.passportSeries,
             formData.address,
+            loanTermStr,
             loanAmountStr,
             downPaymentStr,
             totalWithInterest,
-            monthlyPayment
+            monthlyPayment,
+
         );
+        setFormData({
+            fullName: "",
+            age: "",
+            phone: "",
+            passportNumber: "",
+            passportSeries: "",
+            address: "",
+        })
         onClose(); // Закрываем модалку после скачивания
     };
 
