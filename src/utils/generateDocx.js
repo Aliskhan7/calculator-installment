@@ -11,6 +11,9 @@ export const generateWordFromTemplate = async (fullName,
                                                passportNumber,
                                                passportSeries,
                                                address, loanTermStr, loanAmount, downPayment, totalWithInterest, monthlyPayment, ) => {
+    const today = new Date();
+    const formattedDateToday = today.toLocaleDateString("ru-RU");
+
     try {
         // 1️⃣ Загружаем шаблон Word (из папки public/static)
         const response = await fetch(templateDocx);
@@ -22,6 +25,7 @@ export const generateWordFromTemplate = async (fullName,
 
         // 3️⃣ Подставляем реальные значения в плейсхолдеры
         doc.setData({
+            formattedDateToday,
             fullName,
             age,
             phone,
