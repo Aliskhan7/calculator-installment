@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { NumericFormat } from "react-number-format";
-import {generateWordFromTemplate} from "../../utils/generateDocx";
+import { generateWordFromTemplate } from "../../utils/generateDocx";
 
-ReactModal.setAppElement("#root"); // Убедись, что у тебя есть root-элемент в index.html
+ReactModal.setAppElement("#root");
 
-const ModalForm = ({ isOpen, onClose,  loanAmountStr, downPaymentStr, totalWithInterest, monthlyPayment, loanTermStr }) => {
+const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithInterest, monthlyPayment, loanTermStr }) => {
     const [formData, setFormData] = useState({
         fullName: "",
         age: "",
@@ -16,7 +16,11 @@ const ModalForm = ({ isOpen, onClose,  loanAmountStr, downPaymentStr, totalWithI
     });
 
     const handleChange = (field, value) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
+        // console.log(`Изменено поле ${field}:`, value); // Логируем, что передается в стейт
+        setFormData((prev) => ({
+            ...prev,
+            [field]: value, // ✅ Убираем `.toString()`, он не нужен!
+        }));
     };
 
     const handleDownload = () => {
@@ -31,8 +35,7 @@ const ModalForm = ({ isOpen, onClose,  loanAmountStr, downPaymentStr, totalWithI
             loanAmountStr,
             downPaymentStr,
             totalWithInterest,
-            monthlyPayment,
-
+            monthlyPayment
         );
         setFormData({
             fullName: "",
@@ -41,8 +44,8 @@ const ModalForm = ({ isOpen, onClose,  loanAmountStr, downPaymentStr, totalWithI
             passportNumber: "",
             passportSeries: "",
             address: "",
-        })
-        onClose(); // Закрываем модалку после скачивания
+        });
+        onClose();
     };
 
     return (
