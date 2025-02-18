@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactModal from "react-modal";
-import { NumericFormat } from "react-number-format";
+import {PatternFormat} from "react-number-format";
 import { generateWordFromTemplate } from "../../utils/generateDocx";
 
 ReactModal.setAppElement("#root");
@@ -16,10 +16,9 @@ const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithIn
     });
 
     const handleChange = (field, value) => {
-        // console.log(`Изменено поле ${field}:`, value); // Логируем, что передается в стейт
         setFormData((prev) => ({
             ...prev,
-            [field]: value, // ✅ Убираем `.toString()`, он не нужен!
+            [field]: value,
         }));
     };
 
@@ -49,23 +48,35 @@ const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithIn
     };
 
     return (
-        <ReactModal isOpen={isOpen} onRequestClose={onClose} className="modal" overlayClassName="overlay">
-            <div className="modal-content">
+        <ReactModal isOpen={isOpen} onRequestClose={onClose} className="modal" overlayClassName="fixed top-0 left-0 w-screen h-screen bg-black/50 flex items-center justify-center">
+            <div className="bg-white p-5 rounded-lg w-fit flex flex-col gap-2">
                 <h2>Введите данные</h2>
 
                 <label>Ф.И.О:</label>
-                <input type="text" value={formData.fullName} onChange={(e) => handleChange("fullName", e.target.value)} />
+                <input
+                    className="border border-gray-200 px-2 py-2 rounded-md"
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) => {
+                        const onlyLetters = e.target.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s]/g, ""); // Разрешены буквы и пробелы
+                        handleChange("fullName", onlyLetters);
+                    }}
+                    placeholder="Введите Ф.И.О."
+                />
 
                 <label>Возраст:</label>
-                <NumericFormat
+                <PatternFormat
+                    className="border border-gray-200 px-2 py-2 rounded-md"
                     value={formData.age}
+                    format="##"
                     allowLeadingZeros={false}
                     decimalScale={0}
                     onValueChange={(values) => handleChange("age", values.value)}
                 />
 
                 <label>Телефон:</label>
-                <NumericFormat
+                <PatternFormat
+                    className="border border-gray-200 px-2 py-2 rounded-md"
                     value={formData.phone}
                     format="+7 (###) ###-##-##"
                     mask="_"
@@ -74,16 +85,21 @@ const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithIn
                 />
 
                 <label>Паспорт:</label>
-                <div className="passport-inputs">
-                    <NumericFormat
+                <div className="flex w-full gap-2.5">
+                    <PatternFormat
+                        className="border border-gray-200 px-2 py-2 rounded-md"
                         placeholder="№"
+                        format="######"
                         value={formData.passportNumber}
                         allowLeadingZeros
                         decimalScale={0}
                         onValueChange={(values) => handleChange("passportNumber", values.value)}
                     />
-                    <NumericFormat
+                    <PatternFormat
+                        className="border border-gray-200 px-2 py-2 rounded-md"
                         placeholder="Серия"
+                        format="## ##"
+                        mask=" "
                         value={formData.passportSeries}
                         allowLeadingZeros
                         decimalScale={0}
@@ -92,51 +108,13 @@ const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithIn
                 </div>
 
                 <label>Место проживания:</label>
-                <input type="text" value={formData.address} onChange={(e) => handleChange("address", e.target.value)} />
+                <input className="border border-gray-200 px-2 py-2 rounded-md" type="text" value={formData.address} onChange={(e) => handleChange("address", e.target.value)}/>
 
-                <div className="modal-buttons">
+                <div className="flex justify-between mt-2.5">
                     <button onClick={handleDownload}>Скачать DOCX</button>
                     <button onClick={onClose}>Закрыть</button>
                 </div>
             </div>
-
-            <style jsx>{`
-                .overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100vw;
-                    height: 100vh;
-                    background: rgba(0, 0, 0, 0.5);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .modal {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    width: 400px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                }
-                .passport-inputs {
-                    display: flex;
-                    gap: 10px;
-                }
-                .modal-buttons {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 10px;
-                }
-                input {
-                    width: 100%;
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 5px;
-                }
-            `}</style>
         </ReactModal>
     );
 };
