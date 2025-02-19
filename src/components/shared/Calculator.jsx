@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {NumericFormat} from "react-number-format";
-import {generateWordDoc, generateWordFromTemplate} from "../../utils/generateDocx";
 import {formatNumber} from "../../utils/formatters";
 import ModalForm from "./ModalForm";
 
@@ -143,10 +142,8 @@ const Calculator = () => {
                     className={`${bgColor} transition delay-75`}>{formatNumber(totalWithInterest)}</span> руб.</h3>
                 <h3>Ежемесячный платеж: <span
                     className={`${bgColor} transition delay-75`}>{formatNumber(monthlyPayment)}</span> руб.</h3>
-                {/*<button onClick={() => generateWordFromTemplate(loanAmountStr, downPaymentStr, totalWithInterest, monthlyPayment)}>*/}
-                {/*    Скачать DOCX*/}
-                {/*</button>*/}
-                <button onClick={() => setModalOpen(true)}>Скачать DOCX</button>
+
+                <button className='border border-green-600 bg-green-600 w-fit mt-12 mx-auto text-white hover:bg-transparent hover:text-green-600 duration-75 px-4 py-2 rounded-xl' onClick={() => setModalOpen(true)}>Скачать DOCX</button>
                 <ModalForm isOpen={modalOpen} loanTermStr={loanTermStr} loanAmountStr={loanAmountStr} downPaymentStr={downPaymentStr} totalWithInterest={totalWithInterest} monthlyPayment={monthlyPayment}  onClose={() => setModalOpen(false)}/>
             </div>
         </div>
