@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {NumericFormat} from "react-number-format";
-import {generateWordDoc, generateWordFromTemplate} from "../../utils/generateDocx";
 import {formatNumber} from "../../utils/formatters";
 import ModalForm from "./ModalForm";
 
