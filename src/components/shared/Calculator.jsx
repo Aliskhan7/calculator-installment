@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {NumericFormat} from "react-number-format";
+import {formatNumber} from "../../utils/formatters";
+import ModalForm from "./ModalForm";
+
 
 const Calculator = () => {
     const [loanAmountStr, setLoanAmountStr] = useState("10000");
@@ -8,6 +11,8 @@ const Calculator = () => {
     const [totalWithInterest, setTotalWithInterest] = useState("0");
     const [monthlyPayment, setMonthlyPayment] = useState("0");
     const [bgColor, setBgColor] = useState("bg-gray-200/50");
+
+    const [modalOpen, setModalOpen] = useState(false);
 
 
     const getTableRate = (loanTerm) => {
@@ -88,24 +93,12 @@ const Calculator = () => {
         setDownPaymentStr(value.toString());
     };
 
-    const formatNumber = (num) => {
-        return Math.trunc(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    };
-
-
     return (
         <div className='p-5 lg:p-0 w-full lg:w-1/2 mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
             <h2 className='text-3xl text-center pt-5 font-bold'>Калькулятор рассрочки</h2>
             <form className="flex flex-col gap-4 mt-12">
                 <div className="flex flex-col gap-2">
                     <label>Сумма рассрочки:</label>
-                    {/*<input*/}
-                    {/*    className="border border-gray-200 px-2 py-2 rounded-md"*/}
-                    {/*    type="number"*/}
-                    {/*    value={loanAmountStr}*/}
-                    {/*    onChange={handleLoanAmountChange}*/}
-                    {/*/>*/}
-
                     <NumericFormat
                         value={loanAmountStr}
                         thousandSeparator=" "
@@ -149,6 +142,9 @@ const Calculator = () => {
                     className={`${bgColor} transition delay-75`}>{formatNumber(totalWithInterest)}</span> руб.</h3>
                 <h3>Ежемесячный платеж: <span
                     className={`${bgColor} transition delay-75`}>{formatNumber(monthlyPayment)}</span> руб.</h3>
+
+                <button className='border border-green-600 bg-green-600 w-fit mt-12 mx-auto text-white hover:bg-transparent hover:text-green-600 duration-75 px-4 py-2 rounded-xl' onClick={() => setModalOpen(true)}>Скачать DOCX</button>
+                <ModalForm isOpen={modalOpen} loanTermStr={loanTermStr} loanAmountStr={loanAmountStr} downPaymentStr={downPaymentStr} totalWithInterest={totalWithInterest} monthlyPayment={monthlyPayment}  onClose={() => setModalOpen(false)}/>
             </div>
         </div>
     );
