@@ -14,7 +14,10 @@ function App() {
             </div>
             <footer className='absolute bottom-2 right-2 md:bottom-5 md:right-10'>
                 <div className='flex items-end gap-x-2'>
-                    <img className='w-fit h-[80px]  object-contain mx-auto' src={logoAG} alt="logo"/>
+                    <a href="https://ag-one.netlify.app/" target='_blank' rel='noreferrer' className='flex items-center justify-center'>
+                        <span className='underline text-gray-800 text-sm'>Разработано</span>
+                        <img className='w-fit h-[60px] object-contain mx-auto' src={logoAG} alt="logo"/>
+                    </a>
                 </div>
             </footer>
         </div>
