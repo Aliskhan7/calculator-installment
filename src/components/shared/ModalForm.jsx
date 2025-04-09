@@ -48,8 +48,8 @@ const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithIn
     };
 
     return (
-        <ReactModal isOpen={isOpen} onRequestClose={onClose} className="modal" overlayClassName="fixed top-0 left-0 w-screen h-screen bg-black/50 flex items-center justify-center">
-            <div className="relative bg-white p-12 rounded-lg w-[500px] flex flex-col gap-5">
+        <ReactModal isOpen={isOpen} onRequestClose={onClose} className="modal w-full md:w-[500px]" overlayClassName="fixed top-0 left-0 w-screen h-screen bg-black/50 flex items-center justify-center">
+            <div className="relative  z-50 bg-white p-12 rounded-lg   flex flex-col gap-5">
                 <div className='absolute top-4 right-6 flex justify-between items-center'>
                     <button className='ml-auto' onClick={onClose}>X</button>
                 </div>
@@ -97,7 +97,7 @@ const ModalForm = ({ isOpen, onClose, loanAmountStr, downPaymentStr, totalWithIn
                 </div>
                 <div className='flex flex-col gap-2'>
                     <label>Паспорт:</label>
-                    <div className="flex w-full gap-2.5">
+                    <div className="flex flex-col md:flex-row w-full gap-2.5">
                         <PatternFormat
                             className="border border-gray-200 px-2 py-2 rounded-md"
                             placeholder="№"

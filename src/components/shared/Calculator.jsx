@@ -94,7 +94,7 @@ const Calculator = () => {
     };
 
     return (
-        <div className='p-5 lg:p-0 w-full lg:w-1/2 mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+        <div className='p-5 lg:p-0 my-20 w-full mx-auto  '>
             <h2 className='text-3xl text-center pt-5 font-bold'>Калькулятор рассрочки</h2>
             <form className="flex flex-col gap-4 mt-12">
                 <div className="flex flex-col gap-2">
@@ -118,7 +118,7 @@ const Calculator = () => {
                         value={loanTermStr}
                         onChange={handleLoanTermChange}
                     />
-                    <div className="absolute z-10 top-[41px] left-6 text-gray-500/50 pointer-events-none">= {getTableRate(loanTermStr)}%</div>
+                    <div className=" z-0 absolute top-[41px] left-6 text-gray-500/50 pointer-events-none">= {getTableRate(loanTermStr)}%</div>
                 </div>
 
                 <div className="flex flex-col gap-2">
